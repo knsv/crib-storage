@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/knsv/crib-storage#readme",
   "dependencies": {
-    "crib-mq": "git+https://github.com/knsv/crib-storage.git",
+    "crib-mq": "git+https://github.com/knsv/crib-mq.git",
     "cron": "^1.1.0",
     "q": "^1.4.1"
   }
