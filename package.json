@@ -1,5 +1,5 @@
 {
-  "name": "crib-scheduler",
+  "name": "crib-storage",
   "version": "0.1.0",
   "description": "Scheduling service for the crib home automation system.",
   "main": "src/api.js",
