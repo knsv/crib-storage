@@ -23,6 +23,7 @@
   "dependencies": {
     "crib-mq": "git+https://github.com/knsv/crib-mq.git",
     "cron": "^1.1.0",
+    "node-persist": "0.0.11",
     "q": "^1.4.1"
   }
 }

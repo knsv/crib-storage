@@ -1,6 +1,5 @@
 // We need this to build our post string
-var Q = require('q');
-
+let Q = require('q');
 let buss = undefined;
 
 exports.init = (_buss) => {
@@ -22,9 +21,11 @@ exports.get = function get(key) {
     buss.emit('GET', {requestId, key});
 
     buss.on('DATA',(data) => {
+        console.log('Checking data for ',data);
         const requestDeferred = idDb[data.requestId];
+        console.log('deferred ',requestDeferred);
         if(requestDeferred){
-            requestDeferred.resolve(data);
+            requestDeferred.resolve(data.value);
         }
     });
 
