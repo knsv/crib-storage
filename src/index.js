@@ -2,7 +2,7 @@
  * Created by knut on 2016-04-17.
  */
 var cronJob = require('cron').CronJob;
-var cribMq = require('crib-mq');
+var cribMq = require('../../crib-mq');
 var storage = require('node-persist');
 var cribLog = require('../../crib-log/src/api');
 var log = cribLog.createLogger('crib-storage','debug');
