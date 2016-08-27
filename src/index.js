@@ -4,6 +4,8 @@
 var cronJob = require('cron').CronJob;
 var cribMq = require('crib-mq');
 var storage = require('node-persist');
+var cribLog = require('../../crib-log/src/api');
+var log = cribLog.createLogger('crib-storage','debug');
 
 storage.init({
     dir:'../../../../db',
@@ -16,32 +18,30 @@ storage.init({
     ttl: false, // ttl* [NEW], can be true for 24h default or a number in MILLISECONDS
 });
 
-var buss = cribMq.register('crib-storage', 'http://127.0.0.1:8900');
-console.log('Starting Storage service', process.cwd());
+log.info('Starting Storage service using this buuss: ', process.env.CRIB_BUSS_URL);
+var buss = cribMq.register('crib-storage');
+log.debug('Starting Storage service at this path: ', process.cwd());
 var db = {};
 
 
-    module.exports = function (config) {
+buss.on('SET',function(data){
+    log.info('Setting data in perstent storage, key: ',data.key);
+    //log.info('Setting data in perstent storage, data: ',data.value);
+    storage.setItem(data.key, data.value);
+});
 
-        console.log('Setting up event handlers');
-        buss.on('SET',function(data){
-            storage.setItem(data.key, data.value);
-        });
+buss.on('GET',function(data){
 
-        buss.on('GET',function(data){
+    console.log('Fetching data for ',data.key);
+    // storage.getItem(data.key, (res) => {
+    //     log.debug('Result from data fetch for ',data.key,' is resulted in:',res);
+    // });
 
-            console.log('Fetching data for ',data.key);
-            storage.getItem(data.key, (res) => {
-               console.log('Result = ',res)
-            });
+    buss.emit('DATA',{
+            value: storage.getItem(data.key),
+            requestId: data.requestId
+        }
+    );
+});
 
-            buss.emit('DATA',{
-                value: storage.getItem(data.key),
-                requestId: data.requestId
-                }
-            );
-        });
-    };
-
-var conf = require(process.cwd() + '/crib.conf.js');
-module.exports(conf);
+console.log('Storage service STARTED', process.cwd());
