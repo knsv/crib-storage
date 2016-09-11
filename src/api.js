@@ -9,15 +9,15 @@ const idDb = {};
 exports.init = (_buss) => {
     buss = _buss;
 
-    buss.on('DATA',(data) => {
-        log.info('Gor data for ',data.requestId);
-    const requestDeferred = idDb[data.requestId];
-    log.info('Waiting promise for data: ',requestDeferred);
-    if(requestDeferred){
-        requestDeferred.resolve(data.value);
-    }
-});
 
+    buss.on('DATA',(data) => {
+        const requestDeferred = idDb[data.requestId];
+        log.info('Waiting promise for data: ',requestDeferred);
+        if(requestDeferred){
+            log.info('Data found for ',data.requestId);
+            requestDeferred.resolve(data.value);
+        }
+    });
 };
 
 // Get playlists.
@@ -35,6 +35,7 @@ exports.get = function get(key) {
     return deferred.promise;
 };
 
+exports.getPromiseForKey = (key) => idDb[key];
 
 
 exports.set = function(key, value){
