@@ -33,9 +33,10 @@ buss.on('SET',function(data){
 buss.on('GET',function(data){
 
     console.log('Fetching data for ',data.key);
-    // storage.getItem(data.key, (res) => {
-    //     log.debug('Result from data fetch for ',data.key,' is resulted in:',res);
-    // });
+    const val=storage.getItem(data.key, (res) => {
+        log.debug('Result from data fetch for ',data.key,' is resulted in:',res);
+    });
+    console.log('Res data for ', val);
 
     buss.emit('DATA',{
             value: storage.getItem(data.key),
